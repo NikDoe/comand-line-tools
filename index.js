@@ -24,12 +24,10 @@ fs.readdir(process.cwd(), async (error, filenames) => {
 		console.log(error);
 	}
 
-	for (const filename of filenames) {
-		try {
-			const stats = await lstat(filename);
-			console.log(filename, stats.isFile());
-		} catch (err) {
-			console.log(err);
-		}
-	}
+	const statsPromises = filenames.map(filename => lstat(filename));
+	const allStats = await Promise.all(statsPromises);
+
+	allStats.forEach((stats, index) => {
+		console.log(filenames[index], stats.isFile());
+	});
 });
