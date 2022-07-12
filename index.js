@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const chalk = require('chalk');
 // const util = require('util');
 
 // Method #1
@@ -28,6 +29,7 @@ fs.readdir(process.cwd(), async (error, filenames) => {
 	const allStats = await Promise.all(statsPromises);
 
 	allStats.forEach((stats, index) => {
-		console.log(filenames[index], stats.isFile());
+		if (stats.isFile()) console.log(filenames[index]);
+		else console.log(chalk.hex('#660099').italic(filenames[index]));
 	});
 });
